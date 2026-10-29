@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>H2O Design Handoff</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#EDEDED;--card:#FFFFFF;--ink:#2B2B2B;--sub:#5E5E5E;--mute:#8C8C8C;--line:#E2E2E2;--lime:#C5F04F;--dark:#1F1F1F}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Figtree','Noto Sans KR',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:24px 16px 64px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
+.logo{font-weight:700;font-size:20px;letter-spacing:-.01em;display:flex;align-items:center;gap:6px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--lime);display:inline-block}
+.lang{display:flex;background:var(--card);border-radius:999px;padding:4px;gap:2px}
+.lang button{border:0;background:transparent;font:inherit;font-size:13px;font-weight:600;color:var(--sub);padding:7px 12px;border-radius:999px;cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--dark);color:#fff}
+.card{background:var(--card);border-radius:28px;padding:28px 24px;margin-bottom:14px}
+h1{font-size:clamp(28px,6vw,40px);line-height:1.15;letter-spacing:-.02em;margin:0 0 14px;font-weight:700}
+h1 .dot{width:11px;height:11px;margin-left:4px;vertical-align:baseline}
+h2{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:0 0 16px;display:flex;gap:10px;align-items:center}
+h2 .num{color:var(--ink)}
+h3{font-size:19px;margin:0 0 6px;letter-spacing:-.01em}
+p{margin:0 0 10px}
+.lead{font-size:17px;color:var(--sub)}
+.meta{font-size:13px;color:var(--mute);margin-top:16px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:600px){.opts{grid-template-columns:1fr}}
+.opt{border:1.5px solid var(--line);border-radius:20px;padding:18px}
+.tag{display:inline-block;font-size:12px;font-weight:700;background:var(--bg);border-radius:999px;padding:3px 10px;margin-bottom:10px}
+ul{margin:8px 0 0;padding-left:18px}
+li{margin-bottom:4px;font-size:14.5px}
+.small{font-size:13px;color:var(--sub)}
+.scope{margin-top:14px;background:var(--bg);border-radius:16px;padding:14px 16px;font-size:14px}
+.scope b{display:block;margin-bottom:4px}
+.table{width:100%;border-collapse:collapse;font-size:14.5px}
+.table th,.table td{text-align:left;padding:11px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.table th{font-size:12px;color:var(--mute);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.table td:first-child{color:var(--sub);width:34%}
+.scroll{overflow-x:auto}
+.proposal{background:var(--dark);color:#fff;border-radius:28px;padding:28px 24px;margin-bottom:14px}
+.proposal h2{color:#9A9A9A}
+.proposal ol{margin:0;padding-left:20px}
+.proposal li{font-size:15px;margin-bottom:8px}
+.proposal .hl{color:var(--lime);font-weight:700}
+form .q{margin-bottom:22px}
+label.ql{display:block;font-weight:700;font-size:15.5px;margin-bottom:10px}
+.choices{display:grid;gap:8px}
+.choice{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;cursor:pointer;font-weight:600;font-size:15px}
+.choice input{accent-color:var(--dark);width:18px;height:18px;margin:0}
+.choice:has(input:checked){border-color:var(--dark);background:#F7FBEA}
+.choice small{display:block;font-weight:400;color:var(--sub);font-size:13px}
+input[type=text],textarea{width:100%;font:inherit;font-size:15px;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff;color:var(--ink)}
+input[type=text]:focus,textarea:focus{outline:none;border-color:var(--dark)}
+textarea{min-height:96px;resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row .choice{flex:1;min-width:120px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.btn{border:0;font:inherit;font-weight:700;font-size:15px;border-radius:999px;padding:15px 24px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn.primary{background:var(--dark);color:#fff}
+.btn.ghost{background:var(--bg);color:var(--ink)}
+.status{font-size:13.5px;color:var(--sub);margin-top:12px;min-height:20px}
+.err{color:#C0392B}
+footer{text-align:center;font-size:13px;color:var(--mute);margin-top:24px}
+footer a{color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">H2O<span class="dot"></span></div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      <button type="button" data-lang="ko" aria-pressed="false">한국어</button>
+    </div>
+  </header>
+
+  <section class="card">
+    <h1><span data-t="title"></span><span class="dot"></span></h1>
+    <p class="lead" data-t="lead"></p>
+    <p class="meta" data-t="meta"></p>
+  </section>
+
+  <section class="card">
+    <h2><span class="num">01</span><span data-t="optsH"></span></h2>
+    <div class="opts">
+      <div class="opt">
+        <span class="tag">A</span>
+        <h3>Figma</h3>
+        <p class="small" data-t="aDesc"></p>
+        <ul data-tl="aList"></ul>
+      </div>
+      <div class="opt">
+        <span class="tag">B</span>
+        <h3>Claude Code + Pull requests</h3>
+        <p class="small" data-t="bDesc"></p>
+        <ul data-tl="bList"></ul>
+      </div>
+    </div>
+    <div class="scope">
+      <b data-t="scopeH"></b>
+      <span data-t="scope"></span>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="num">02</span><span data-t="cmpH"></span></h2>
+    <div class="scroll">
+      <table class="table">
+        <thead><tr><th></th><th>A. Figma</th><th>B. PR</th></tr></thead>
+        <tbody data-tt="cmp"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="proposal">
+    <h2><span data-t="propH"></span></h2>
+    <ol data-tl="prop"></ol>
+  </section>
+
+  <section class="card">
+    <h2><span class="num">03</span><span data-t="formH"></span></h2>
+    <form id="f" novalidate>
+      <div class="q">
+        <label class="ql" data-t="q1"></label>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="mode" value="A"><span>A. Figma</span></label>
+          <label class="choice"><input type="radio" name="mode" value="B"><span>B. Pull requests</span></label>
+          <label class="choice"><input type="radio" name="mode" value="MIX"><span><span data-t="mix"></span><small data-t="mixSub"></small></span></label>
+        </div>
+      </div>
+      <div class="q">
+        <label class="ql" for="stack" data-t="q2"></label>
+        <input type="text" id="stack" name="stack" data-ph="q2ph">
+      </div>
+      <div class="q">
+        <label class="ql" data-t="q3"></label>
+        <div class="row">
+          <label class="choice"><input type="radio" name="repo" value="yes"><span data-t="yes"></span></label>
+          <label class="choice"><input type="radio" name="repo" value="no"><span data-t="no"></span></label>
+          <label class="choice"><input type="radio" name="repo" value="na"><span data-t="na"></span></label>
+        </div>
+        <input type="text" id="gh" name="gh" data-ph="ghph" style="margin-top:8px">
+      </div>
+      <div class="q">
+        <label class="ql" for="msg" data-t="q4"></label>
+        <textarea id="msg" name="msg" data-ph="q4ph"></textarea>
+      </div>
+      <div class="actions">
+        <button class="btn primary" type="submit" data-t="send"></button>
+        <button class="btn ghost" type="button" id="copy" data-t="copy"></button>
+      </div>
+      <p class="status" id="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <footer>YoungDo Lee · <a href="mailto:youngdonet@gmail.com">youngdonet@gmail.com</a></footer>
+</div>
+
+<script>
+const TO = 'youngdonet@gmail.com';
+const T = {
+fr:{
+ title:"Livraison du design H2O",
+ lead:"Bonjour, je suis YoungDo Lee, le designer de l'app H2O. Avant de commencer, j'aimerais savoir sous quelle forme vous préférez recevoir le design. Trois réponses suffisent, en bas de page.",
+ meta:"Environ 2 minutes · Vos réponses me sont envoyées par e-mail",
+ optsH:"Deux façons de travailler",
+ aDesc:"Je conçois écrans, composants et design tokens dans Figma ; vous les implémentez.",
+ aList:["Mode de collaboration familier","Vous gardez la main sur tout le code","Une passe de QA design est à prévoir après intégration"],
+ bDesc:"J'implémente la couche UI dans votre dépôt avec Claude Code et j'ouvre des PR ; vous relisez et fusionnez.",
+ bList:["Le résultat fusionné correspond exactement au design","Moins d'intégration UI pour vous","Il faut fixer la stack et les conventions au départ"],
+ scopeH:"Périmètre des PR : la couche UI uniquement",
+ scope:"Écrans, composants, styles, tokens et animations d'interface, avec des données fictives. La logique, l'API, l'audio, l'authentification et le hors-ligne restent chez vous. Le devis n'inclut pas le développement.",
+ cmpH:"Comparaison",
+ cmp:[["Code de l'UI écrit par","Vous","Moi, relu par vous"],["Fidélité au design","QA design nécessaire","Exacte à la fusion"],["Votre charge","Intégration UI complète","Revue de code + logique"],["Prérequis","Accès Figma","Stack fixée, accès au dépôt"],["Validation par l'équipe","Lien Figma commenté","Captures ou build de test"]],
+ propH:"Ma proposition : un mélange",
+ prop:["<span class='hl'>Figma</span> pour valider le design avec toute l'équipe, côté coréen et français.","<span class='hl'>PR</span> pour les design tokens et les composants partagés (boutons, cartes, barre d'onglets, mini-lecteur).","<span class='hl'>Écrans au choix</span> : intégrés par vous depuis Figma, ou livrés en PR, écran par écran."],
+ formH:"Vos réponses",
+ q1:"1. Quel mode préférez-vous ?",
+ mix:"Mélange", mixSub:"La proposition ci-dessus",
+ q2:"2. Quelle stack pour l'app ?", q2ph:"React Native, Flutter, Swift/Kotlin…",
+ q3:"3. Si B ou mélange : pouvez-vous me donner accès au dépôt GitHub ?",
+ yes:"Oui", no:"Non", na:"Pas concerné",
+ ghph:"Lien du dépôt ou nom d'utilisateur GitHub (facultatif)",
+ q4:"Un mot à ajouter ? (facultatif)", q4ph:"Questions, contraintes, disponibilités…",
+ send:"Envoyer par e-mail", copy:"Copier mes réponses",
+ need:"Merci de choisir un mode (question 1).",
+ sent:"Votre messagerie s'ouvre avec les réponses. Si rien ne s'ouvre, copiez-les et envoyez-les à "+TO+".",
+ copied:"Réponses copiées. Collez-les dans un e-mail à "+TO+".",
+ subject:"H2O – Livraison du design : réponses",
+ labels:["Mode","Stack","Accès au dépôt","Dépôt / GitHub","Message"],
+ modes:{A:"A. Figma",B:"B. Pull requests",MIX:"Mélange"}, repo:{yes:"Oui",no:"Non",na:"Pas concerné"}
+},
+en:{
+ title:"H2O design handoff",
+ lead:"Hello, I'm YoungDo Lee, the designer on the H2O app. Before we start, I'd like to know how you prefer to receive the design. Three answers at the bottom of the page are all I need.",
+ meta:"About 2 minutes · Your answers are sent to me by email",
+ optsH:"Two ways to work",
+ aDesc:"I design screens, components and design tokens in Figma; you implement them.",
+ aList:["A familiar workflow","You keep full control of the code","A design QA pass is needed after implementation"],
+ bDesc:"I implement the UI layer in your repository with Claude Code and open PRs; you review and merge.",
+ bList:["What you merge matches the design exactly","Less UI integration work for you","Stack and conventions must be set up front"],
+ scopeH:"PR scope: the UI layer only",
+ scope:"Screens, components, styles, tokens and UI animations, with mock data. Logic, API, audio, authentication and offline stay with you. The quote does not include development.",
+ cmpH:"Comparison",
+ cmp:[["UI code written by","You","Me, reviewed by you"],["Design fidelity","Needs design QA","Exact at merge"],["Your workload","Full UI implementation","Code review + logic"],["Prerequisites","Figma access","Stack set, repo access"],["Team review","Commented Figma link","Screenshots or test build"]],
+ propH:"My proposal: a mix",
+ prop:["<span class='hl'>Figma</span> to agree on the design with the whole team, Korean and French.","<span class='hl'>PRs</span> for design tokens and shared components (buttons, cards, tab bar, mini player).","<span class='hl'>Screens either way</span>: built by you from Figma, or delivered as PRs, screen by screen."],
+ formH:"Your answers",
+ q1:"1. Which approach do you prefer?",
+ mix:"Mix", mixSub:"The proposal above",
+ q2:"2. What stack is the app built with?", q2ph:"React Native, Flutter, Swift/Kotlin…",
+ q3:"3. If B or the mix: can you give me access to the GitHub repository?",
+ yes:"Yes", no:"No", na:"Not applicable",
+ ghph:"Repository link or GitHub username (optional)",
+ q4:"Anything to add? (optional)", q4ph:"Questions, constraints, availability…",
+ send:"Send by email", copy:"Copy my answers",
+ need:"Please pick an approach (question 1).",
+ sent:"Your mail app opens with the answers. If nothing opens, copy them and send them to "+TO+".",
+ copied:"Answers copied. Paste them into an email to "+TO+".",
+ subject:"H2O – Design handoff: answers",
+ labels:["Approach","Stack","Repo access","Repo / GitHub","Message"],
+ modes:{A:"A. Figma",B:"B. Pull requests",MIX:"Mix"}, repo:{yes:"Yes",no:"No",na:"Not applicable"}
+},
+ko:{
+ title:"H2O 디자인 전달 방식",
+ lead:"안녕하세요, H2O 앱 디자이너 YoungDo Lee입니다. 작업을 시작하기 전에 디자인을 어떤 방식으로 받는 게 편하신지 여쭙고 싶습니다. 페이지 아래 세 가지만 답해 주시면 됩니다.",
+ meta:"약 2분 · 답변은 이메일로 전달됩니다",
+ optsH:"두 가지 작업 방식",
+ aDesc:"제가 Figma로 화면·컴포넌트·디자인 토큰을 만들고, 개발자님이 구현합니다.",
+ aList:["익숙한 협업 방식","코드는 전부 개발자님이 통제","구현 후 디자인 QA가 한 번 더 필요"],
+ bDesc:"제가 Claude Code로 저장소에 UI 레이어를 구현해 PR을 올리고, 개발자님이 리뷰 후 머지합니다.",
+ bList:["머지 결과가 디자인과 정확히 일치","개발자님의 UI 구현 부담 감소","스택과 코드 규칙을 초기에 합의해야 함"],
+ scopeH:"PR 범위: UI 레이어만",
+ scope:"화면, 컴포넌트, 스타일, 토큰, 인터페이스 애니메이션(더미 데이터). 로직, API, 오디오, 인증, 오프라인은 개발자님 담당입니다. 견적에 개발은 포함되지 않습니다.",
+ cmpH:"비교",
+ cmp:[["UI 코드 작성","개발자님","디자이너, 개발자님 리뷰"],["디자인 일치도","디자인 QA 필요","머지 시점에 일치"],["개발자님 부담","UI 구현 전체","코드 리뷰 + 로직"],["사전 준비","Figma 접근","스택 확정, 저장소 접근"],["팀 확인 방식","Figma 링크 코멘트","캡처 또는 테스트 빌드"]],
+ propH:"제안: 두 방식 혼합",
+ prop:["<span class='hl'>Figma</span>로 한국·프랑스 팀 모두와 디자인을 합의합니다.","<span class='hl'>PR</span>로 디자인 토큰과 공통 컴포넌트(버튼, 카드, 탭 바, 미니 플레이어)를 전달합니다.","<span class='hl'>화면은 선택</span>: Figma를 보고 직접 구현하시거나, 제가 PR로 전달합니다. 화면별로 정해도 됩니다."],
+ formH:"답변",
+ q1:"1. 어떤 방식을 선호하시나요?",
+ mix:"혼합", mixSub:"위 제안",
+ q2:"2. 앱 개발 스택은 무엇인가요?", q2ph:"React Native, Flutter, Swift/Kotlin…",
+ q3:"3. B나 혼합이라면, GitHub 저장소 접근 권한을 주실 수 있나요?",
+ yes:"예", no:"아니요", na:"해당 없음",
+ ghph:"저장소 링크 또는 GitHub 사용자명 (선택)",
+ q4:"덧붙일 말씀 (선택)", q4ph:"질문, 제약 사항, 일정 등",
+ send:"이메일로 보내기", copy:"답변 복사",
+ need:"1번 질문에서 방식을 선택해 주세요.",
+ sent:"메일 앱이 답변과 함께 열립니다. 열리지 않으면 답변을 복사해 "+TO+"로 보내 주세요.",
+ copied:"답변을 복사했습니다. "+TO+"로 보내 주세요.",
+ subject:"H2O – 디자인 전달 방식 답변",
+ labels:["방식","스택","저장소 접근","저장소 / GitHub","메시지"],
+ modes:{A:"A. Figma",B:"B. Pull requests",MIX:"혼합"}, repo:{yes:"예",no:"아니요",na:"해당 없음"}
+}};
+
+let lang = 'fr';
+try { const s = localStorage.getItem('h2o-lang'); if (T[s]) lang = s; } catch (e) {}
+const f = document.getElementById('f');
+const status = document.getElementById('status');
+
+function render() {
+  const d = T[lang];
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-t]').forEach(el => { el.textContent = d[el.dataset.t]; });
+  document.querySelectorAll('[data-ph]').forEach(el => { el.placeholder = d[el.dataset.ph]; });
+  document.querySelectorAll('[data-tl]').forEach(el => { el.innerHTML = d[el.dataset.tl].map(x => '<li>' + x + '</li>').join(''); });
+  document.querySelector('[data-tt=cmp]').innerHTML = d.cmp.map(r => '<tr>' + r.map(c => '<td>' + c + '</td>').join('') + '</tr>').join('');
+  document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+  status.textContent = '';
+}
+document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => {
+  lang = b.dataset.lang;
+  try { localStorage.setItem('h2o-lang', lang); } catch (e) {}
+  render();
+}));
+
+// Keep a draft per viewer so a reload does not lose answers
+const KEY = 'h2o-handoff-draft';
+try {
+  const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+  for (const [k, v] of Object.entries(saved)) {
+    const el = f.elements[k];
+    if (!el) continue;
+    if (el instanceof RadioNodeList) { const r = [...el].find(x => x.value === v); if (r) r.checked = true; }
+    else el.value = v;
+  }
+} catch (e) {}
+f.addEventListener('input', () => {
+  try { localStorage.setItem(KEY, JSON.stringify(Object.fromEntries(new FormData(f)))); } catch (e) {}
+});
+
+function summary() {
+  const d = T[lang], v = Object.fromEntries(new FormData(f));
+  if (!v.mode) { status.innerHTML = '<span class="err">' + d.need + '</span>'; return null; }
+  const L = d.labels;
+  return [
+    L[0] + ': ' + d.modes[v.mode],
+    L[1] + ': ' + (v.stack || '-'),
+    L[2] + ': ' + (v.repo ? d.repo[v.repo] : '-'),
+    L[3] + ': ' + (v.gh || '-'),
+    L[4] + ': ' + (v.msg || '-')
+  ].join('\n');
+}
+f.addEventListener('submit', e => {
+  e.preventDefault();
+  const s = summary(); if (!s) return;
+  location.href = 'mailto:' + TO + '?subject=' + encodeURIComponent(T[lang].subject) + '&body=' + encodeURIComponent(s);
+  status.textContent = T[lang].sent;
+});
+document.getElementById('copy').addEventListener('click', async () => {
+  const s = summary(); if (!s) return;
+  try { await navigator.clipboard.writeText(T[lang].subject + '\n\n' + s); status.textContent = T[lang].copied; }
+  catch (e) { status.textContent = s; }
+});
+render();
+</script>
+</body>
+</html>
